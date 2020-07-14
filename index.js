@@ -15,8 +15,7 @@ const enginePackages = {
 };
 
 const codeceptPackages = [
-  'codeceptjs',
-  '@codeceptjs/configure',
+  'codeceptjs@3.0.0-beta.4',
   '@codeceptjs/ui',
   '@codeceptjs/examples',
   '@codeceptjs/configure'
@@ -105,6 +104,7 @@ async function createCodecept(opts) {
   const root = path.join(process.cwd(), projectName || '');
   fs.ensureDirSync(root);
 
+  const currentDir = process.cwd();
   process.chdir(root);
 
 
@@ -157,7 +157,8 @@ async function createCodecept(opts) {
   fs.writeJsonSync('package.json', packageJson);
 
 
-  // await install(deps.flat());
+  await install(deps.flat());
+  await chdir();
 
   console.log('Finished installing packages.');
 
@@ -171,22 +172,36 @@ async function createCodecept(opts) {
   console.log('➕', chalk.cyan('npm run codecept:demo:server'), '- starts codeceptjs UI as a webserver for a demo project');
   console.log();
   console.log('Initialize CodeceptJS for your project:');
-  console.log('🔨', chalk.yellow('npx codeceptjs init'), '- initialize codeceptjs for current project', chalk.bold('required'));
+  console.log('🔨', chalk.yellow('npx codeceptjs init'), '- initialize codeceptjs for current project', chalk.bold('(required)'));
   console.log('➕', chalk.cyan('npm run codecept'), '- runs codeceptjs tests for current project');
   console.log('➕', chalk.cyan('npm run codecept:headless'), '- executes codeceptjs tests headlessly (no window shown)');
   console.log('➕', chalk.cyan('npm run codecept:app'), '- starts codeceptjs UI application for current project');
   console.log('➕', chalk.cyan('npm run codecept:server'), '- starts codeceptJS UI as webserver');
-  // if (opts)
-  // npx create-codeceptjs <> --playwright 
-  // npx create-codeceptjs <> --puppeteer
-  // npx create-codeceptjs <> --testcafe
-  // npx create-codeceptjs <> 
+
+  console.log();
+  if (root != currentDir) {
+    console.log('⚠', 'Change directory to', chalk.yellow(root), 'to run these commands');
+  }
 }
 
 // npx create-codeceptjs codecept-tests --playwright && cd codecept-tests && npx codeceptjs init
 
+async function chdir() {
+  return new Promise((resolve, reject) => {
+    const child = spawn('cd', process.cwd(), { stdio: 'inherit' });
+    child.on('close', code => {
+      if (code !== 0) {
+        reject({
+          command: `cd ${process.cwd()}`,
+        });
+        return;
+      }
+      resolve();
+    });
+  })
+}
 
-function install(dependencies, verbose) {
+async function install(dependencies, verbose) {
     return new Promise((resolve, reject) => {
       let command;
       let args;
@@ -195,7 +210,7 @@ function install(dependencies, verbose) {
 
       if (useYarn) {
         command = 'yarnpkg';
-        args = ['add', '--exact'];
+        args = ['add','-D', '--exact'];
         [].push.apply(args, dependencies);
   
         // Explicitly set cwd() to work around issues like
