@@ -39,6 +39,7 @@ console.log(' 🔌 Supercharged End 2 End Testing 🌟');
 
 let projectName;
 let useYarn;
+let packageJson;
 
 const program = new commander.Command('Create CodeceptJS')
   .version(packageJson.version)
