@@ -42,7 +42,7 @@ let useYarn;
 let packageJson;
 
 const program = new commander.Command('Create CodeceptJS')
-  .version(packageJson.version)
+  .version(fs.readJSONSync(path.join(__dirname, 'package.json')).version)
   .arguments('[project]')
   .usage(`${chalk.green('[project]')} [options]`)
   .action(name => {
@@ -129,16 +129,15 @@ async function createCodecept(opts) {
   if (!existsSync('package.json')) {
     console.log('package.json file does not exist in current dir, creating it...');
 
-    const packageJson = {
+    packageJson = {
       name: 'codeceptjs-tests',
       version: '0.1.0',
       private: true,
     };
-    fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
   } else {
     console.log('package.json found, adding codeceptjs dependencies & scripts into it');
+    packageJson = fs.readJsonSync('package.json');
   }
-  packageJson = fs.readJsonSync('package.json');
 
 
   if (!packageJson.scripts) packageJson.scripts = {};
@@ -157,7 +156,6 @@ async function createCodecept(opts) {
 
 
   await install(deps.flat());
-  await chdir();
 
   console.log('Finished installing packages.');
 
@@ -181,23 +179,6 @@ async function createCodecept(opts) {
   if (root != currentDir) {
     console.log('⚠', 'Change directory to', chalk.yellow(root), 'to run these commands');
   }
-}
-
-// npx create-codeceptjs codecept-tests --playwright && cd codecept-tests && npx codeceptjs init
-
-async function chdir() {
-  return new Promise((resolve, reject) => {
-    const child = spawn('cd', process.cwd(), { stdio: 'inherit' });
-    child.on('close', code => {
-      if (code !== 0) {
-        reject({
-          command: `cd ${process.cwd()}`,
-        });
-        return;
-      }
-      resolve();
-    });
-  })
 }
 
 async function install(dependencies, verbose) {
