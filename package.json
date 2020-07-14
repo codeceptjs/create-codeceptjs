@@ -1,8 +1,11 @@
 {
     "name": "create-codeceptjs",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
+    "bin": {
+       "create-codeceptjs": "index.js"
+    },    
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "codecept": "codeceptjs run --steps",
