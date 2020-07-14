@@ -11,11 +11,18 @@ Create CodeceptJS project easily, having all dependencies installed with one com
                                                                                                   
 ```
 
+
+This script will install all required depdnedncies for CodeceptJS project. 
+It is not required to use `create-codeceptjs` on any project, you can install them on your own, but it is very easy to start from scratch.
+
+This script will also update `scripts` section of `package.json` so you could execute tests faster without learning Codeceptjs commands.
+
 ## Installation
 
 No installation needed 🤗
 
 ## Usage
+
 
 Install CodeceptJS + Playwright into current project
 
@@ -41,8 +48,10 @@ Install CodeceptJS + webdriverio into "tests" directory
 npx create-codeceptjs tests --webdriverio
 ```
 
-Other options:
+Supported options:
 
 * `--puppeteer` - install puppeteer as default helper
 * `--testcafe` - install testcafe as default helper
+* `--yarn` - yes, we support yarn too!
+
 

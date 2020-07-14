@@ -39,7 +39,6 @@ console.log(' 🔌 Supercharged End 2 End Testing 🌟');
 
 let projectName;
 let useYarn;
-let packageJson = fs.readJsonSync('package.json');
 
 const program = new commander.Command('Create CodeceptJS')
   .version(packageJson.version)
@@ -83,8 +82,6 @@ if (typeof projectName === 'undefined' && !existsSync('package.json')) {
   );
   process.exit(1);
 }
-
-// npx create-codeceptjs --template typescript --playwright codecept-tests
 
 createCodecept(program.opts());
 
@@ -136,10 +133,11 @@ async function createCodecept(opts) {
       version: '0.1.0',
       private: true,
     };
-    fs.writeJsonSync('package.json', packageJson);
+    fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
   } else {
     console.log('package.json found, adding codeceptjs dependencies & scripts into it');
   }
+  packageJson = fs.readJsonSync('package.json');
 
 
   if (!packageJson.scripts) packageJson.scripts = {};
@@ -154,7 +152,7 @@ async function createCodecept(opts) {
   packageJson.scripts['codecept:demo:app'] = 'codecept-ui --app  -c node_modules/@codeceptjs/examples';
   packageJson.scripts['codecept:demo:server'] = 'codecept-ui -c node_modules/@codeceptjs/examples';
 
-  fs.writeJsonSync('package.json', packageJson);
+  fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
 
 
   await install(deps.flat());

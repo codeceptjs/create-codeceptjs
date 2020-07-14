@@ -1,6 +1,6 @@
 {
     "name": "create-codeceptjs",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
     "scripts": {
@@ -45,7 +45,7 @@
         "@codeceptjs/configure": "^0.5.2",
         "@codeceptjs/examples": "^1.2.1",
         "@codeceptjs/ui": "^0.3.8",
-        "codeceptjs": "^2.6.6",
+        "codeceptjs": "^3.0.0-beta.4",
         "playwright": "^1.2.1"
     }
 }
