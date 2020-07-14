@@ -1,43 +1,55 @@
+#!/usr/bin/env node
 const chalk = require('chalk');
 const commander = require('commander');
-const dns = require('dns');
+const fs = require('fs-extra');
 const { existsSync }  = require('fs');
-const envinfo = require('envinfo');
-const execSync = require('child_process').execSync;
-const fsExtra = require('fs-extra');
-const hyperquest = require('hyperquest');
-const inquirer = require('inquirer');
-const os = require('os');
 const path = require('path');
 const semver = require('semver');
 const spawn = require('cross-spawn');
-const tmp = require('tmp');
-const unpack = require('tar-pack').unpack;
-const url = require('url');
-const validateProjectName = require('validate-npm-package-name');
 
 const enginePackages = {
-  puppeteer: ['puppeteer@4'],
+  puppeteer: ['puppeteer@5'],
   playwright: ['playwright@1'],
   testcafe: ['testcafe@1'],
   webdriverio: ['webdriverio@6'],
 };
 
 const codeceptPackages = [
+  'codeceptjs',
+  '@codeceptjs/configure',
   '@codeceptjs/ui',
   '@codeceptjs/examples',
   '@codeceptjs/configure'
 ];
 
+const CFonts = require('cfonts');
+
+CFonts.say('Create|CodeceptJS', {
+	font: 'chrome',              // define the font face
+	align: 'left',              // define text alignment
+	colors: ['system'],         // define all colors
+	background: 'transparent',  // define the background color, you can also use `backgroundColor` here as key
+	space: true,                // define if the output text should have empty lines on top and on the bottom
+	maxLength: '0',             // define how many character can be on one line
+	gradient: ['yellow',"#805ad5"],            // define your two gradient colors
+	independentGradient: true, // define if you want to recalculate the gradient for each new line
+	transitionGradient: false,  // define if this is a transition between colors directly
+	env: 'node'                 // define the environment CFonts is being executed in
+});
+console.log(' 🔌 Supercharged End 2 End Testing 🌟');
+
 let projectName;
+let useYarn;
+let packageJson = fs.readJsonSync('package.json');
 
 const program = new commander.Command('Create CodeceptJS')
   .version(packageJson.version)
-  .arguments('<project-directory>')
-  .usage(`${chalk.green('<project-directory>')} [options]`)
+  .arguments('[project]')
+  .usage(`${chalk.green('[project]')} [options]`)
   .action(name => {
     projectName = name;
   })
+  .option('--use-yarn')
   .option('--verbose', 'print additional logs')
   .option('--info', 'print environment debug info')
 
@@ -52,13 +64,13 @@ const program = new commander.Command('Create CodeceptJS')
 
   .allowUnknownOption()
   .on('--help', () => {
-    console.log(`    Only ${chalk.green('<project-directory>')} is required.`);
     console.log();
   })
   .parse(process.argv);
 
-if (typeof projectName === 'undefined') {
-  console.error('Please specify the project directory:');
+if (typeof projectName === 'undefined' && !existsSync('package.json')) {
+  console.error('There is no package.json in current directory');
+  console.log('To create codeceptjs in a new project pass in a directory name:');
   console.log(
     `  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}`
   );
@@ -66,6 +78,7 @@ if (typeof projectName === 'undefined') {
   console.log('For example:');
   console.log(`  ${chalk.cyan(program.name())} ${chalk.green('codeceptjs-tests')}`);
   console.log();
+  console.log('To update current project to include codeceptjs packages, run this script in a directory with package.json');
   console.log(
     `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
   );
@@ -74,7 +87,9 @@ if (typeof projectName === 'undefined') {
 
 // npx create-codeceptjs --template typescript --playwright codecept-tests
 
-function createCodecept(opts) {
+createCodecept(program.opts());
+
+async function createCodecept(opts) {
   const unsupportedNodeVersion = !semver.satisfies(process.version, '>=12');
   if (unsupportedNodeVersion) {
     console.log(
@@ -85,17 +100,33 @@ function createCodecept(opts) {
     );
   }
 
-  const root = path.resolve(name);
-  const appName = path.basename(root);
-  fs.ensureDirSync(name);
+  useYarn = opts.useYarn;
 
-  if (!isSafeToCreateProjectIn(root, name)) {
-    process.exit(1);
-  }
+  const root = path.join(process.cwd(), projectName || '');
+  fs.ensureDirSync(root);
+
+  process.chdir(root);
+
+
+  console.log();
+  console.log(`Creating CodeceptJS project in ${chalk.bold(root)}`);
   console.log();
 
-  console.log(`Creating a new CodeceptJS project`);
-  console.log();
+
+  let deps = codeceptPackages;
+  if (opts.puppeteer) {
+    console.log(`Powered by ${chalk.yellow('Puppeteer')} engine`);
+    deps.push(enginePackages.puppeteer);
+  } else if (opts.webdriverio) {
+    console.log(`Powered by ${chalk.yellow('WebDriver')} engine`);
+    deps.push(enginePackages.webdriverio);
+  } else if (opts.testcafe) {
+    console.log(`Powered by ${chalk.yellow('TestCafe')} engine`);
+    deps.push(enginePackages.testcafe);
+  } else {
+    console.log(`Powered by ${chalk.yellow('Playwright')} engine`);
+    deps.push(enginePackages.playwright);
+  }  
 
   if (!existsSync('package.json')) {
     console.log('package.json file does not exist in current dir, creating it...');
@@ -106,25 +137,46 @@ function createCodecept(opts) {
       private: true,
     };
     fs.writeJsonSync('package.json', packageJson);
+  } else {
+    console.log('package.json found, adding codeceptjs dependencies & scripts into it');
   }
 
-  let packageJson = fs.readJsonSync('package.json');
 
   if (!packageJson.scripts) packageJson.scripts = {};
 
-  packageJson.scripts['e2e'] = 'codeceptjs run --steps';
-  packageJson.scripts['e2e:app'] = 'codecept-ui --app';
-  packageJson.scripts['e2e:server'] = 'codecept-ui';
+  packageJson.scripts['codecept'] = 'codeceptjs run --steps';
+  packageJson.scripts['codecept:headless'] = 'HEADLESS=true codeceptjs run --steps';
+  packageJson.scripts['codecept:app'] = 'codecept-ui --app';
+  packageJson.scripts['codecept:server'] = 'codecept-ui';
 
-  packageJson.scripts['e2e:example'] = 'codeceptjs run --steps -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['e2e:example:app'] = 'codecept-ui --app  -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['e2e:example:server'] = 'codecept-ui -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codecept:demo'] = 'codeceptjs run --steps -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codecept:demo:headless'] = 'HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codecept:demo:app'] = 'codecept-ui --app  -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codecept:demo:server'] = 'codecept-ui -c node_modules/@codeceptjs/examples';
 
   fs.writeJsonSync('package.json', packageJson);
 
-  let initDeps = false;
 
-  if (opts)
+  // await install(deps.flat());
+
+  console.log('Finished installing packages.');
+
+  console.log();
+  console.log(chalk.bold('What\'s next?'));
+  console.log()
+  console.log('Try CodeceptJS now with a demo project:');
+  console.log('➕', chalk.bold.cyan('npm run codecept:demo'), '- executes codeceptjs tests for a demo project');
+  console.log('➕', chalk.cyan('npm run codecept:demo:headless'), '- executes codeceptjs tests headlessly (no window shown)');
+  console.log('➕', chalk.bold.cyan('npm run codecept:demo:app'), '- starts codeceptjs UI application for a demo project');
+  console.log('➕', chalk.cyan('npm run codecept:demo:server'), '- starts codeceptjs UI as a webserver for a demo project');
+  console.log();
+  console.log('Initialize CodeceptJS for your project:');
+  console.log('🔨', chalk.yellow('npx codeceptjs init'), '- initialize codeceptjs for current project', chalk.bold('required'));
+  console.log('➕', chalk.cyan('npm run codecept'), '- runs codeceptjs tests for current project');
+  console.log('➕', chalk.cyan('npm run codecept:headless'), '- executes codeceptjs tests headlessly (no window shown)');
+  console.log('➕', chalk.cyan('npm run codecept:app'), '- starts codeceptjs UI application for current project');
+  console.log('➕', chalk.cyan('npm run codecept:server'), '- starts codeceptJS UI as webserver');
+  // if (opts)
   // npx create-codeceptjs <> --playwright 
   // npx create-codeceptjs <> --puppeteer
   // npx create-codeceptjs <> --testcafe
@@ -138,16 +190,31 @@ function install(dependencies, verbose) {
     return new Promise((resolve, reject) => {
       let command;
       let args;
-      command = 'npm';
-      args = [
-          'install',
-          '--save-dev',
-          '--loglevel',
-          'error',
-      ].concat(dependencies);
 
-      if (verbose) {
-          args.push('--verbose');
+      console.log('Installing packages: ', chalk.green(dependencies.join(', ')));
+
+      if (useYarn) {
+        command = 'yarnpkg';
+        args = ['add', '--exact'];
+        [].push.apply(args, dependencies);
+  
+        // Explicitly set cwd() to work around issues like
+        // https://github.com/facebook/create-react-app/issues/3326.
+        // Unfortunately we can only do this for Yarn because npm support for
+        // equivalent --prefix flag doesn't help with this issue.
+        // This is why for npm, we run checkThatNpmCanReadCwd() early instead.
+        args.push('--cwd');
+        args.push(root);
+      
+      } else {
+        command = 'npm';
+        args = [
+            'install',
+            '--save-dev',
+            '--loglevel',
+            'error',
+        ].concat(dependencies);
+
       }
 
       const child = spawn(command, args, { stdio: 'inherit' });
