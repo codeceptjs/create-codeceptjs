@@ -55,7 +55,6 @@ const program = new commander.Command('Create CodeceptJS')
   .option('--template <template>', 'Install template')
 
   // engines select
-  .option('--playwright', 'Install playwright packages')
   .option('--puppeteer', 'Install puppeteer packages')
   .option('--webdriverio', 'Install webdriverio packages')
   .option('--testcafe', 'Install testcafe packages')
