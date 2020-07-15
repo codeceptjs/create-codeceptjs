@@ -40,7 +40,7 @@ console.log(' 🔌 Supercharged End 2 End Testing 🌟');
 let projectName;
 let useYarn;
 
-const program = new commander.Command('Create CodeceptJS')
+const program = new commander.Command('npx create-codeceptjs')
   .version(packageJson.version)
   .arguments('[project]')
   .usage(`${chalk.green('[project]')} [options]`)
@@ -76,7 +76,7 @@ if (typeof projectName === 'undefined' && !existsSync('package.json')) {
   console.log('For example:');
   console.log(`  ${chalk.cyan(program.name())} ${chalk.green('codeceptjs-tests')}`);
   console.log();
-  console.log('To update current project to include codeceptjs packages, run this script in a directory with package.json');
+  console.log('To update current project to include CodeceptJS packages, run this script in a directory with package.json');
   console.log(
     `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
   );
