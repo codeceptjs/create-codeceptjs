@@ -8,17 +8,17 @@
     },    
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "codecept": "codeceptjs run --steps",
-        "codecept:app": "codecept-ui --app",
-        "codecept:server": "codecept-ui",
-        "codecept:example": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codecept:example:app": "codecept-ui --app  -c node_modules/@codeceptjs/examples",
-        "codecept:example:server": "codecept-ui -c node_modules/@codeceptjs/examples",
-        "codecept:headless": "HEADLESS=true codeceptjs run --steps",
-        "codecept:demo": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codecept:demo:headless": "HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codecept:demo:app": "codecept-ui --app  -c node_modules/@codeceptjs/examples",
-        "codecept:demo:server": "codecept-ui -c node_modules/@codeceptjs/examples"
+        "codeceptjs": "codeceptjs run --steps",
+        "codeceptjs:app": "codecept-ui --app",
+        "codeceptjs:server": "codecept-ui",
+        "codeceptjs:example": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
+        "codeceptjs:example:app": "codecept-ui --app  -c node_modules/@codeceptjs/examples",
+        "codeceptjs:example:server": "codecept-ui -c node_modules/@codeceptjs/examples",
+        "codeceptjs:headless": "HEADLESS=true codeceptjs run --steps",
+        "codeceptjs:demo": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
+        "codeceptjs:demo:headless": "HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples",
+        "codeceptjs:demo:app": "codecept-ui --app  -c node_modules/@codeceptjs/examples",
+        "codeceptjs:demo:server": "codecept-ui -c node_modules/@codeceptjs/examples"
     },
     "repository": {
         "type": "git",
