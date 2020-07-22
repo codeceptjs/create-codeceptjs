@@ -111,15 +111,20 @@ async function createCodecept(opts) {
 
 
   let deps = codeceptPackages;
+  let demoConfigFile = 'node_modules/@codeceptjs/examples';
+
   if (opts.puppeteer) {
     console.log(`Powered by ${chalk.yellow('Puppeteer')} engine`);
     deps.push(enginePackages.puppeteer);
+    demoConfigFile += '/codecept.puppeteer.conf.js';
   } else if (opts.webdriverio) {
     console.log(`Powered by ${chalk.yellow('WebDriver')} engine`);
     deps.push(enginePackages.webdriverio);
+    demoConfigFile += '/codecept.webdriver.conf.js';
   } else if (opts.testcafe) {
     console.log(`Powered by ${chalk.yellow('TestCafe')} engine`);
     deps.push(enginePackages.testcafe);
+    demoConfigFile += '/codecept.testcafe.conf.js';
   } else {
     console.log(`Powered by ${chalk.yellow('Playwright')} engine`);
     deps.push(enginePackages.playwright);
@@ -138,19 +143,16 @@ async function createCodecept(opts) {
     packageJson = fs.readJsonSync('package.json');
   }
 
-
   if (!packageJson.scripts) packageJson.scripts = {};
 
   packageJson.scripts['codeceptjs'] = 'codeceptjs run --steps';
   packageJson.scripts['codeceptjs:headless'] = 'HEADLESS=true codeceptjs run --steps';
-  packageJson.scripts['codeceptjs:app'] = 'codecept-ui --app';
-  packageJson.scripts['codeceptjs:server'] = 'codecept-ui';
-
-  packageJson.scripts['codeceptjs:demo'] = 'codeceptjs run --steps -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['codeceptjs:demo:headless'] = 'HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['codeceptjs:demo:app'] = 'codecept-ui --app  -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['codeceptjs:demo:server'] = 'codecept-ui -c node_modules/@codeceptjs/examples';
-
+  packageJson.scripts['codeceptjs:ui'] = 'codecept-ui --app';
+ 
+  packageJson.scripts['codeceptjs:demo'] = `codeceptjs run --steps -c ${demoConfigFile}`;
+  packageJson.scripts['codeceptjs:demo:headless'] = `HEADLESS=true codeceptjs run --steps -c ${demoConfigFile}`;
+  packageJson.scripts['codeceptjs:demo:ui'] = `codecept-ui --app  -c ${demoConfigFile}`;
+ 
   fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
 
 
@@ -164,15 +166,13 @@ async function createCodecept(opts) {
   console.log('Try CodeceptJS now with a demo project:');
   console.log('➕', chalk.bold.cyan('npm run codeceptjs:demo'), '- executes codeceptjs tests for a demo project');
   console.log('➕', chalk.cyan('npm run codeceptjs:demo:headless'), '- executes codeceptjs tests headlessly (no window shown)');
-  console.log('➕', chalk.bold.cyan('npm run codeceptjs:demo:app'), '- starts codeceptjs UI application for a demo project');
-  console.log('➕', chalk.cyan('npm run codeceptjs:demo:server'), '- starts codeceptjs UI as a webserver for a demo project');
+  console.log('➕', chalk.bold.cyan('npm run codeceptjs:demo:ui'), '- starts codeceptjs UI application for a demo project');
   console.log();
   console.log('Initialize CodeceptJS for your project:');
   console.log('🔨', chalk.yellow('npx codeceptjs init'), '- initialize codeceptjs for current project', chalk.bold('(required)'));
   console.log('➕', chalk.cyan('npm run codeceptjs'), '- runs codeceptjs tests for current project');
   console.log('➕', chalk.cyan('npm run codeceptjs:headless'), '- executes codeceptjs tests headlessly (no window shown)');
-  console.log('➕', chalk.cyan('npm run codeceptjs:app'), '- starts codeceptjs UI application for current project');
-  console.log('➕', chalk.cyan('npm run codeceptjs:server'), '- starts codeceptJS UI as webserver');
+  console.log('➕', chalk.cyan('npm run codeceptjs:ui'), '- starts codeceptjs UI application for current project');
 
   console.log();
   if (root != currentDir) {

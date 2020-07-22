@@ -1,24 +1,12 @@
 {
     "name": "create-codeceptjs",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
     "bin": {
        "create-codeceptjs": "index.js"
     },    
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "codeceptjs": "codeceptjs run --steps",
-        "codeceptjs:app": "codecept-ui --app",
-        "codeceptjs:server": "codecept-ui",
-        "codeceptjs:example": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codeceptjs:example:app": "codecept-ui --app  -c node_modules/@codeceptjs/examples",
-        "codeceptjs:example:server": "codecept-ui -c node_modules/@codeceptjs/examples",
-        "codeceptjs:headless": "HEADLESS=true codeceptjs run --steps",
-        "codeceptjs:demo": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codeceptjs:demo:headless": "HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codeceptjs:demo:app": "codecept-ui --app  -c node_modules/@codeceptjs/examples",
-        "codeceptjs:demo:server": "codecept-ui -c node_modules/@codeceptjs/examples"
     },
     "repository": {
         "type": "git",
