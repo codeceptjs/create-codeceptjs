@@ -164,16 +164,14 @@ async function createCodecept(opts) {
   console.log()
   console.log('Try CodeceptJS now with a demo project:');
   console.log('➕', chalk.bold.cyan('npm run codecept:demo'), '- executes codeceptjs tests for a demo project');
+  console.log('➕', chalk.bold.cyan('npm run codecept:demo:app'), '- starts codeceptjs application with UI for a demo project');
   console.log('➕', chalk.cyan('npm run codecept:demo:headless'), '- executes codeceptjs tests headlessly (no window shown)');
-  console.log('➕', chalk.bold.cyan('npm run codecept:demo:app'), '- starts codeceptjs UI application for a demo project');
-  console.log('➕', chalk.cyan('npm run codecept:demo:server'), '- starts codeceptjs UI as a webserver for a demo project');
   console.log();
   console.log('Initialize CodeceptJS for your project:');
   console.log('🔨', chalk.yellow('npx codeceptjs init'), '- initialize codeceptjs for current project', chalk.bold('(required)'));
   console.log('➕', chalk.cyan('npm run codecept'), '- runs codeceptjs tests for current project');
   console.log('➕', chalk.cyan('npm run codecept:headless'), '- executes codeceptjs tests headlessly (no window shown)');
   console.log('➕', chalk.cyan('npm run codecept:app'), '- starts codeceptjs UI application for current project');
-  console.log('➕', chalk.cyan('npm run codecept:server'), '- starts codeceptJS UI as webserver');
 
   console.log();
   if (root != currentDir) {
