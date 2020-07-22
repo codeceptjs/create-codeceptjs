@@ -56,7 +56,6 @@ const program = new commander.Command('Create CodeceptJS')
   .option('--template <template>', 'Install template')
 
   // engines select
-  .option('--playwright', 'Install playwright packages')
   .option('--puppeteer', 'Install puppeteer packages')
   .option('--webdriverio', 'Install webdriverio packages')
   .option('--testcafe', 'Install testcafe packages')
@@ -77,7 +76,7 @@ if (typeof projectName === 'undefined' && !existsSync('package.json')) {
   console.log('For example:');
   console.log(`  ${chalk.cyan(program.name())} ${chalk.green('codeceptjs-tests')}`);
   console.log();
-  console.log('To update current project to include codeceptjs packages, run this script in a directory with package.json');
+  console.log('To update current project to include CodeceptJS packages, run this script in a directory with package.json');
   console.log(
     `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
   );
@@ -142,15 +141,15 @@ async function createCodecept(opts) {
 
   if (!packageJson.scripts) packageJson.scripts = {};
 
-  packageJson.scripts['codecept'] = 'codeceptjs run --steps';
-  packageJson.scripts['codecept:headless'] = 'HEADLESS=true codeceptjs run --steps';
-  packageJson.scripts['codecept:app'] = 'codecept-ui --app';
-  packageJson.scripts['codecept:server'] = 'codecept-ui';
+  packageJson.scripts['codeceptjs'] = 'codeceptjs run --steps';
+  packageJson.scripts['codeceptjs:headless'] = 'HEADLESS=true codeceptjs run --steps';
+  packageJson.scripts['codeceptjs:app'] = 'codecept-ui --app';
+  packageJson.scripts['codeceptjs:server'] = 'codecept-ui';
 
-  packageJson.scripts['codecept:demo'] = 'codeceptjs run --steps -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['codecept:demo:headless'] = 'HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['codecept:demo:app'] = 'codecept-ui --app  -c node_modules/@codeceptjs/examples';
-  packageJson.scripts['codecept:demo:server'] = 'codecept-ui -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codeceptjs:demo'] = 'codeceptjs run --steps -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codeceptjs:demo:headless'] = 'HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codeceptjs:demo:app'] = 'codecept-ui --app  -c node_modules/@codeceptjs/examples';
+  packageJson.scripts['codeceptjs:demo:server'] = 'codecept-ui -c node_modules/@codeceptjs/examples';
 
   fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
 
@@ -163,15 +162,17 @@ async function createCodecept(opts) {
   console.log(chalk.bold('What\'s next?'));
   console.log()
   console.log('Try CodeceptJS now with a demo project:');
-  console.log('➕', chalk.bold.cyan('npm run codecept:demo'), '- executes codeceptjs tests for a demo project');
-  console.log('➕', chalk.bold.cyan('npm run codecept:demo:app'), '- starts codeceptjs application with UI for a demo project');
-  console.log('➕', chalk.cyan('npm run codecept:demo:headless'), '- executes codeceptjs tests headlessly (no window shown)');
+  console.log('➕', chalk.bold.cyan('npm run codeceptjs:demo'), '- executes codeceptjs tests for a demo project');
+  console.log('➕', chalk.cyan('npm run codeceptjs:demo:headless'), '- executes codeceptjs tests headlessly (no window shown)');
+  console.log('➕', chalk.bold.cyan('npm run codeceptjs:demo:app'), '- starts codeceptjs UI application for a demo project');
+  console.log('➕', chalk.cyan('npm run codeceptjs:demo:server'), '- starts codeceptjs UI as a webserver for a demo project');
   console.log();
   console.log('Initialize CodeceptJS for your project:');
   console.log('🔨', chalk.yellow('npx codeceptjs init'), '- initialize codeceptjs for current project', chalk.bold('(required)'));
-  console.log('➕', chalk.cyan('npm run codecept'), '- runs codeceptjs tests for current project');
-  console.log('➕', chalk.cyan('npm run codecept:headless'), '- executes codeceptjs tests headlessly (no window shown)');
-  console.log('➕', chalk.cyan('npm run codecept:app'), '- starts codeceptjs UI application for current project');
+  console.log('➕', chalk.cyan('npm run codeceptjs'), '- runs codeceptjs tests for current project');
+  console.log('➕', chalk.cyan('npm run codeceptjs:headless'), '- executes codeceptjs tests headlessly (no window shown)');
+  console.log('➕', chalk.cyan('npm run codeceptjs:app'), '- starts codeceptjs UI application for current project');
+  console.log('➕', chalk.cyan('npm run codeceptjs:server'), '- starts codeceptJS UI as webserver');
 
   console.log();
   if (root != currentDir) {
