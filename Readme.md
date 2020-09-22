@@ -13,7 +13,7 @@ One command to create a fresh CodeceptJS project or add CodeceptJS to an existin
 
 It is not required to use `create-codeceptjs` on any project, you can install them on your own, but it is very easy to start from scratch.
 
-![](https://user-images.githubusercontent.com/220264/87477444-c986b580-c630-11ea-9af4-f383e02dfa2d.gif)
+![](https://user-images.githubusercontent.com/220264/93864416-88182380-fccd-11ea-97fe-3d948e6697c6.gif)
 
 This script will also add several commands to the `scripts` section of your `package.json`, so you can just execute tests without the need to learn custom CodeceptJS commands.
 
