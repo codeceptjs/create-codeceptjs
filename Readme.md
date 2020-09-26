@@ -22,7 +22,7 @@ This script will also add several commands to the `scripts` section of your `pac
 To install CodeceptJS + Playwright into your current project run
 
 ```
-npx create-codeceptjs 
+npx create-codeceptjs .
 ```
 
 To install CodeceptJS + Playwright into the "tests" directory run
