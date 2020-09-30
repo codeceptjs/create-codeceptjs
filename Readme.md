@@ -49,3 +49,16 @@ Supported options:
 * `--webdriverio` - installs WebdriverIO as default helper
 * `--testcafe` - installs TestCafe as default helper
 * `--use-yarn` - yes, we support yarn too!
+
+## NPM Scripts
+
+This command appends following scripts to package.json file:
+
+ * `codeceptjs` - runs tests
+ * `codeceptjs:headless` - runs tests in headless mode 
+ * `codeceptjs:ui` - runs tests via CodeceptUI
+ 
+ * `codeceptjs:demo` - runs tests from demo application
+ * `codeceptjs:demo:headless` - runs tests in headless mode from demo 
+ * `codeceptjs:demo:ui` - opens CodeceptUI for demo application
+
