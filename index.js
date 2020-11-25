@@ -15,7 +15,7 @@ const enginePackages = {
 };
 
 const codeceptPackages = [
-  'codeceptjs@3.0.0',
+  'codeceptjs@3',
   '@codeceptjs/ui',
   '@codeceptjs/examples',
   '@codeceptjs/configure'
