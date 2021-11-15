@@ -156,7 +156,7 @@ async function createCodecept(opts) {
   fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
 
 
-  await install(deps.flat());
+  await install(root, deps.flat());
 
   console.log('Finished installing packages.');
 
@@ -180,7 +180,7 @@ async function createCodecept(opts) {
   }
 }
 
-async function install(dependencies, verbose) {
+async function install(root, dependencies, verbose) {
     return new Promise((resolve, reject) => {
       let command;
       let args;
