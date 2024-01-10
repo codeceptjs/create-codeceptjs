@@ -8,10 +8,10 @@ const semver = require('semver');
 const spawn = require('cross-spawn');
 
 const enginePackages = {
-  puppeteer: ['puppeteer@5'],
+  puppeteer: ['puppeteer@21.1.1'],
   playwright: ['playwright@1'],
   testcafe: ['testcafe@1'],
-  webdriverio: ['webdriverio@6'],
+  webdriverio: ['webdriverio@8'],
 };
 
 const codeceptPackages = [
@@ -128,7 +128,7 @@ async function createCodecept(opts) {
   } else {
     console.log(`Powered by ${chalk.yellow('Playwright')} engine`);
     deps.push(enginePackages.playwright);
-  }  
+  }
 
   if (!existsSync('package.json')) {
     console.log('package.json file does not exist in current dir, creating it...');
@@ -148,11 +148,11 @@ async function createCodecept(opts) {
   packageJson.scripts['codeceptjs'] = 'codeceptjs run --steps';
   packageJson.scripts['codeceptjs:headless'] = 'HEADLESS=true codeceptjs run --steps';
   packageJson.scripts['codeceptjs:ui'] = 'codecept-ui --app';
- 
+
   packageJson.scripts['codeceptjs:demo'] = `codeceptjs run --steps -c ${demoConfigFile}`;
   packageJson.scripts['codeceptjs:demo:headless'] = `HEADLESS=true codeceptjs run --steps -c ${demoConfigFile}`;
   packageJson.scripts['codeceptjs:demo:ui'] = `codecept-ui --app  -c ${demoConfigFile}`;
- 
+
   fs.writeJsonSync('package.json', packageJson, { spaces: 4 });
 
 
@@ -191,7 +191,7 @@ async function install(dependencies, verbose) {
         command = 'yarnpkg';
         args = ['add','-D', '--exact'];
         [].push.apply(args, dependencies);
-  
+
         // Explicitly set cwd() to work around issues like
         // https://github.com/facebook/create-react-app/issues/3326.
         // Unfortunately we can only do this for Yarn because npm support for
@@ -199,7 +199,7 @@ async function install(dependencies, verbose) {
         // This is why for npm, we run checkThatNpmCanReadCwd() early instead.
         args.push('--cwd');
         args.push(root);
-      
+
       } else {
         command = 'npm';
         args = [
@@ -214,8 +214,9 @@ async function install(dependencies, verbose) {
       const child = spawn(command, args, { stdio: 'inherit' });
       child.on('close', code => {
         if (code !== 0) {
+          // if using Playwright, run the command to install the browser drivers
           reject({
-            command: `${command} ${args.join(' ')}`,
+            command: `${args.join(' ').includes('playwright')} ? ${command} ${args.join(' ')}; npx playwright install : ${command} ${args.join(' ')}`,
           });
           return;
         }

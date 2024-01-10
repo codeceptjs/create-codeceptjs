@@ -1,11 +1,11 @@
 {
     "name": "create-codeceptjs",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
     "bin": {
-       "create-codeceptjs": "index.js"
-    },    
+        "create-codeceptjs": "index.js"
+    },
     "scripts": {
     },
     "repository": {
@@ -25,18 +25,18 @@
     },
     "homepage": "https://github.com/codecept-js/create-codeceptjs#readme",
     "dependencies": {
-        "cfonts": "^2.8.5",
-        "chalk": "^4.1.0",
-        "commander": "^5.1.0",
-        "cross-spawn": "^7.0.3",
-        "fs-extra": "^9.0.1",
-        "semver": "^7.3.2"
+        "cfonts": "2.8.5",
+        "chalk": "4.1.0",
+        "commander": "5.1.0",
+        "cross-spawn": "7.0.3",
+        "fs-extra": "9.0.1",
+        "semver": "7.3.2"
     },
     "devDependencies": {
-        "@codeceptjs/configure": "^0.5.2",
-        "@codeceptjs/examples": "^1.2.1",
-        "@codeceptjs/ui": "^0.3.8",
-        "codeceptjs": "^3.0.1",
-        "playwright": "^1.2.1"
+        "@codeceptjs/configure": "0.10.0",
+        "@codeceptjs/examples": "1.2.1",
+        "@codeceptjs/ui": "0.7.0",
+        "codeceptjs": "3.5.11",
+        "playwright": "1.40.1"
     }
 }
