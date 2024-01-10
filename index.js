@@ -214,8 +214,9 @@ async function install(dependencies, verbose) {
       const child = spawn(command, args, { stdio: 'inherit' });
       child.on('close', code => {
         if (code !== 0) {
+          // if using Playwright, run the command to install the browser drivers
           reject({
-            command: `${command} ${args.join(' ')}`,
+            command: `${args.join(' ').includes('playwright')} ? ${command} ${args.join(' ')}; npx playwright install : ${command} ${args.join(' ')}`,
           });
           return;
         }
