@@ -1,13 +1,12 @@
 {
     "name": "create-codeceptjs",
-    "version": "0.1.8",
+    "version": "1.0.0",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
     "bin": {
         "create-codeceptjs": "index.js"
     },
-    "scripts": {
-    },
+    "scripts": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/codeceptjs/create-codeceptjs.git"
