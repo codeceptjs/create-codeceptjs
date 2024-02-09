@@ -1,6 +1,6 @@
 {
     "name": "create-codeceptjs",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
     "bin": {
@@ -38,5 +38,9 @@
         "codeceptjs": "3.5.11",
         "playwright": "1.40.1"
     },
-    "files": ["index.js", "LICENSE", "Readme.md"]
+    "files": [
+        "index.js",
+        "LICENSE",
+        "Readme.md"
+    ]
 }
