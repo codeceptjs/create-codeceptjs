@@ -133,6 +133,11 @@ async function createCodecept(opts) {
     deps.push(enginePackages.playwright);
   }
 
+  if (opts.force) {
+    deps.push('--force');
+  }
+	
+
   if (!existsSync('package.json')) {
     console.log('package.json file does not exist in current dir, creating it...');
 
