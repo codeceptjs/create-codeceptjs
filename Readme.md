@@ -49,6 +49,7 @@ Supported options:
 * `--webdriverio` - installs WebdriverIO as default helper
 * `--testcafe` - installs TestCafe as default helper
 * `--use-yarn` - yes, we support yarn too!
+* `--force`, - accept an incorrect (and potentially broken) dependency resolution when installing with NPM
 
 ## NPM Scripts
 
