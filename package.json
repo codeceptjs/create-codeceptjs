@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/codecept-js/create-codeceptjs.git"
+        "url": "git+https://github.com/codeceptjs/create-codeceptjs.git"
     },
     "keywords": [
         "codeceptjs",
@@ -21,9 +21,9 @@
     "author": "Michael Bodnarchuk",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/codecept-js/create-codeceptjs/issues"
+        "url": "https://github.com/codeceptjs/create-codeceptjs/issues"
     },
-    "homepage": "https://github.com/codecept-js/create-codeceptjs#readme",
+    "homepage": "https://github.com/codeceptjs/create-codeceptjs#readme",
     "dependencies": {
         "cfonts": "2.8.5",
         "chalk": "4.1.0",
