@@ -1,6 +1,6 @@
 {
     "name": "create-codeceptjs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Install CodeceptJS with all its dependencies in a single run",
     "main": "index.js",
     "bin": {
