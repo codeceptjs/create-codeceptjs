@@ -60,6 +60,9 @@ const program = new commander.Command('Create CodeceptJS')
   .option('--webdriverio', 'Install webdriverio packages')
   .option('--testcafe', 'Install testcafe packages')
 
+   // force mode
+  .option('--force', 'Accept an incorrect (and potentially broken) dependency resolution.')
+
   .allowUnknownOption()
   .on('--help', () => {
     console.log();
