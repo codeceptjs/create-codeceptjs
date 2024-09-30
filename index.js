@@ -24,21 +24,22 @@ const codeceptPackages = [
 const CFonts = require('cfonts');
 
 CFonts.say('Create|CodeceptJS', {
-	font: 'chrome',              // define the font face
-	align: 'left',              // define text alignment
-	colors: ['system'],         // define all colors
-	background: 'transparent',  // define the background color, you can also use `backgroundColor` here as key
-	space: true,                // define if the output text should have empty lines on top and on the bottom
-	maxLength: '0',             // define how many character can be on one line
-	gradient: ['yellow',"#805ad5"],            // define your two gradient colors
-	independentGradient: true, // define if you want to recalculate the gradient for each new line
-	transitionGradient: false,  // define if this is a transition between colors directly
-	env: 'node'                 // define the environment CFonts is being executed in
+  font: 'chrome',              
+  align: 'left',              
+  colors: ['system'],         
+  background: 'transparent',  
+  space: true,                
+  maxLength: '0',             
+  gradient: ['yellow',"#805ad5"],            
+  independentGradient: true, 
+  transitionGradient: false,  
+  env: 'node'                 
 });
 console.log(' 🔌 Supercharged End 2 End Testing 🌟');
 
 let projectName;
 let useYarn;
+let usePnpm;
 let packageJson;
 
 const program = new commander.Command('Create CodeceptJS')
@@ -49,6 +50,7 @@ const program = new commander.Command('Create CodeceptJS')
     projectName = name;
   })
   .option('--use-yarn')
+  .option('--use-pnpm')
   .option('--verbose', 'print additional logs')
   .option('--info', 'print environment debug info')
 
@@ -100,6 +102,7 @@ async function createCodecept(opts) {
   }
 
   useYarn = opts.useYarn;
+  usePnpm = opts.usePnpm;
 
   const root = path.join(process.cwd(), projectName || '');
   fs.ensureDirSync(root);
@@ -136,7 +139,7 @@ async function createCodecept(opts) {
   if (opts.force) {
     deps.push('--force');
   }
-	
+  
 
   if (!existsSync('package.json')) {
     console.log('package.json file does not exist in current dir, creating it...');
@@ -200,14 +203,13 @@ async function install(root, dependencies, verbose) {
         args = ['add','-D', '--exact'];
         [].push.apply(args, dependencies);
 
-        // Explicitly set cwd() to work around issues like
-        // https://github.com/facebook/create-react-app/issues/3326.
-        // Unfortunately we can only do this for Yarn because npm support for
-        // equivalent --prefix flag doesn't help with this issue.
-        // This is why for npm, we run checkThatNpmCanReadCwd() early instead.
         args.push('--cwd');
         args.push(root);
 
+      } else if (usePnpm) {
+        command = 'pnpm';
+        args = ['add','--save-dev'];
+        [].push.apply(args, dependencies);
       } else {
         command = 'npm';
         args = [
@@ -216,15 +218,13 @@ async function install(root, dependencies, verbose) {
             '--loglevel',
             'error',
         ].concat(dependencies);
-
       }
 
       const child = spawn(command, args, { stdio: 'inherit' });
       child.on('close', code => {
         if (code !== 0) {
-          // if using Playwright, run the command to install the browser drivers
           reject({
-            command: `${args.join(' ').includes('playwright')} ? ${command} ${args.join(' ')}; npx playwright install : ${command} ${args.join(' ')}`,
+            command: `${command} ${args.join(' ')}`,
           });
           return;
         }
