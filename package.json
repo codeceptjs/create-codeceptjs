@@ -27,7 +27,7 @@
         "cfonts": "2.8.5",
         "chalk": "4.1.0",
         "commander": "5.1.0",
-        "cross-spawn": "7.0.3",
+        "cross-spawn": "7.0.5",
         "fs-extra": "9.0.1",
         "semver": "7.3.2"
     },
