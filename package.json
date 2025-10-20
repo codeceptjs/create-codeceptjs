@@ -36,7 +36,7 @@
         "@codeceptjs/examples": "1.2.1",
         "@codeceptjs/ui": "0.7.0",
         "codeceptjs": "3.6.7",
-        "playwright": "1.40.1"
+        "playwright": "1.55.1"
     },
     "files": [
         "index.js",
